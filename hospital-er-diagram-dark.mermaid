@@ -1,0 +1,95 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'arial',
+    'fontSize': '16px',
+    'primaryTextColor': '#000000',
+    'primaryColor': '#000000',
+    'lineColor': '#000000',
+    'tertiaryColor': '#fff',
+    'mainBkg': '#ffffff'
+  }
+}}%%
+erDiagram
+    Patients ||--o{ Appointments : "schedules"
+    Patients ||--o{ Medical_Records : "has"
+    Patients ||--o{ Admissions : "admits"
+    Patients ||--o{ Billing : "generates"
+    
+    Staff ||--o{ Appointments : "handles"
+    Staff ||--o{ Medical_Records : "creates"
+    Staff ||--o{ Admissions : "manages"
+    
+    Appointments ||--o{ Billing : "generates"
+    Admissions ||--o{ Billing : "generates"
+
+    Patients {
+        int patient_id PK
+        string first_name
+        string last_name
+        date date_of_birth
+        char gender
+        string blood_group
+        string contact_number
+        string email
+        text address
+        string emergency_contact
+        string emergency_contact_number
+        timestamp created_at
+    }
+
+    Staff {
+        int staff_id PK
+        string first_name
+        string last_name
+        string role
+        string department
+        string specialization
+        string contact_number
+        string email
+        string status
+    }
+
+    Appointments {
+        int appointment_id PK
+        int patient_id FK
+        int staff_id FK
+        date appointment_date
+        time appointment_time
+        string purpose
+        string status
+        text notes
+    }
+
+    Medical_Records {
+        int record_id PK
+        int patient_id FK
+        int staff_id FK
+        date visit_date
+        text diagnosis
+        text prescription
+        text notes
+        date follow_up_date
+    }
+
+    Admissions {
+        int admission_id PK
+        int patient_id FK
+        int staff_id FK
+        string room_number
+        datetime admission_date
+        datetime discharge_date
+        text diagnosis
+        string status
+    }
+
+    Billing {
+        int bill_id PK
+        int patient_id FK
+        int admission_id FK
+        int appointment_id FK
+        decimal amount
+        string payment_status
+        datetime payment_date
+        string payment_method
+    }
